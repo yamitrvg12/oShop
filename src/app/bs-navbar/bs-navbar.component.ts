@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AngularFireAuth } from 'angularfire2/auth';
 import * as firebase from 'firebase';
+import { Observable } from 'rxjs/Observable';
 
 @Component({
   selector: 'app-bs-navbar',
@@ -8,10 +9,10 @@ import * as firebase from 'firebase';
   styleUrls: ['./bs-navbar.component.css']
 })
 export class BsNavbarComponent {
-  user: firebase.User;
+  user$: Observable<firebase.User>; // Make an observable from firebase.User
 
   constructor(private afAuth: AngularFireAuth) {
-    afAuth.authState.subscribe(user => this.user = user);
+    this.user$ = afAuth.authState; // Unwrap this Observable in our template using async pipe, this pipe automatically unsubscribe from this observable when the component is destroy
   }
 
   logout() {
