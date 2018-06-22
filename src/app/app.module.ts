@@ -22,6 +22,7 @@ import { LoginComponent } from './login/login.component';
 import { TesteandoComponent } from './testeando/testeando.component';
 import { AuthService } from './auth.service';
 import { AuthGuardService } from './auth-guard.service';
+import { UserService } from './user.service';
 
 
 @NgModule({
@@ -54,7 +55,7 @@ import { AuthGuardService } from './auth-guard.service';
       {path: 'check-out', component: CheckOutComponent, canActivate: [AuthGuardService]},
       {path: 'order-success', component: OrderSuccessComponent, canActivate: [AuthGuardService]},
       {path: 'my-orders', component: MyOrdersComponent, canActivate: [AuthGuardService]},
-      
+
       {path: 'admin/products', component: AdminProductsComponent, canActivate: [AuthGuardService]},
       {path: 'admin/orders', component: AdminOrdersComponent, canActivate: [AuthGuardService]},
 
@@ -63,6 +64,7 @@ import { AuthGuardService } from './auth-guard.service';
   providers: [
     AuthService,
     AuthGuardService,
+    UserService,
   ],
   bootstrap: [AppComponent]
 })

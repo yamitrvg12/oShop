@@ -3,17 +3,22 @@ import { AngularFireAuth } from 'angularfire2/auth';
 import * as firebase from 'firebase';
 import { Observable } from 'rxjs/Observable';
 import { ActivatedRoute, Router } from '@angular/router';
+import { UserService } from './user.service';
 
 @Injectable()
 export class AuthService {
   user$: Observable<firebase.User>; // Make an observable from firebase.User
 
   constructor(
-    private afAuth: AngularFireAuth, 
+    private afAuth: AngularFireAuth,
     private route: ActivatedRoute,
     private router: Router,
+    private userService: UserService,
   ) {
-    this.user$ = afAuth.authState; // Unwrap this Observable in our template using async pipe, this pipe automatically unsubscribe from this observable when the component is destroy
+    // Unwrap this Observable in our template using async pipe,
+    // this pipe automatically unsubscribe from this observable when
+    // the component is destroy
+    this.user$ = afAuth.authState;
   }
 
   login() {
@@ -24,9 +29,10 @@ export class AuthService {
     this.afAuth.auth.signInWithPopup(new firebase.auth.GoogleAuthProvider())
       .then(auth => {
         if (auth.user) {
-          const returnUrl = localStorage.getItem('returnUrl');
+          const getUrl = localStorage.getItem('returnUrl');
 
-          this.router.navigateByUrl(returnUrl);
+          this.userService.save(auth.user);
+          this.router.navigateByUrl(getUrl);
         }
       });
   }
