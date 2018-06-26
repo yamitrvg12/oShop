@@ -23,6 +23,7 @@ import { TesteandoComponent } from './testeando/testeando.component';
 import { AuthService } from './auth.service';
 import { AuthGuardService } from './auth-guard.service';
 import { UserService } from './user.service';
+import { AdminAuthGuardService } from './admin-auth-guard.service';
 
 
 @NgModule({
@@ -52,12 +53,32 @@ import { UserService } from './user.service';
       {path: 'products', component: ProductsComponent},
       {path: 'shopping-cart', component: ShoppingCartComponent},
 
-      {path: 'check-out', component: CheckOutComponent, canActivate: [AuthGuardService]},
-      {path: 'order-success', component: OrderSuccessComponent, canActivate: [AuthGuardService]},
-      {path: 'my-orders', component: MyOrdersComponent, canActivate: [AuthGuardService]},
+      {
+        path: 'check-out',
+        component: CheckOutComponent,
+        canActivate: [AuthGuardService]
+      },
+      {
+        path: 'order-success',
+        component: OrderSuccessComponent,
+        canActivate: [AuthGuardService]
+      },
+      {
+        path: 'my-orders',
+        component: MyOrdersComponent,
+        canActivate: [AuthGuardService]
+      },
 
-      {path: 'admin/products', component: AdminProductsComponent, canActivate: [AuthGuardService]},
-      {path: 'admin/orders', component: AdminOrdersComponent, canActivate: [AuthGuardService]},
+      {
+        path: 'admin/products',
+        component: AdminProductsComponent,
+        canActivate: [AuthGuardService, AdminAuthGuardService]
+      },
+      {
+        path: 'admin/orders',
+        component: AdminOrdersComponent,
+        canActivate: [AuthGuardService, AdminAuthGuardService]
+      },
 
     ])
   ],
@@ -65,6 +86,7 @@ import { UserService } from './user.service';
     AuthService,
     AuthGuardService,
     UserService,
+    AdminAuthGuardService,
   ],
   bootstrap: [AppComponent]
 })

@@ -13,16 +13,18 @@ export class AuthGuardService implements CanActivate {
     // Instead of subscribe we are going to call map operator that return an observable.
     // Angular internally subscribe into this new boolean observable and then remove this subscription later.
     return this.auth.user$.map(user => {
-      if (user) return true;
+      if (user) {
+        return true;
+      }
 
       this.router.navigate(
-        ['/login'], 
+        ['/login'],
         {
-          queryParams: { 
-            returnUrl: state.url 
+          queryParams: {
+            returnUrl: state.url
           }
         });
-        
+
       return false;
     });
   }
