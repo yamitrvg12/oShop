@@ -1,9 +1,12 @@
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from 'angularfire2/auth';
-import * as firebase from 'firebase';
 import { Observable } from 'rxjs/Observable';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from './user.service';
+import { AppUser } from './models/app-user';
+import 'rxjs/add/operator/switchMap';
+import 'rxjs/add/observable/of';
+import * as firebase from 'firebase';
 
 @Injectable()
 export class AuthService {
@@ -13,8 +16,7 @@ export class AuthService {
     private afAuth: AngularFireAuth,
     private route: ActivatedRoute,
     private router: Router,
-    private userService: UserService,
-  ) {
+    private userService: UserService) {
     // Unwrap this Observable in our template using async pipe,
     // this pipe automatically unsubscribe from this observable when
     // the component is destroy
@@ -39,6 +41,17 @@ export class AuthService {
 
   logout() {
     this.afAuth.auth.signOut();
+  }
+
+  get appUser$(): Observable<AppUser> {
+    return this.user$
+      .switchMap(user => {
+        if (user) {
+          return this.userService.get(user.uid);
+        } else {
+          return Observable.of(null);
+        }
+      });
   }
 
 }
